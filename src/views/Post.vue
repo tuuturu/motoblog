@@ -1,7 +1,7 @@
 <template>
 	<div class="Post">
 		<div class="grid-item" @click="$router.push(`${base_url}/images`)">
-			<img alt="" :src="post.images[0].url" />
+			<img alt="" :src="cover_photo_url" />
 			<span class="images-button">Images</span>
 		</div>
 
@@ -28,11 +28,9 @@
 
 <script>
 import IconLocation from '@/components/IconLocation'
-import PostService from '@/service/post_service'
 import IconBlog from '@/components/IconBlog'
 
 import PostBlock from '@/components/PostBlock'
-import LocationService from '@/service/location_service'
 
 export default {
 	components: { IconBlog, IconLocation, PostBlock },
@@ -44,6 +42,7 @@ export default {
 		base_url() { return `/posts/${this.post.id}` },
 		distance() { return this.post ? this.post.distance : '' },
 		day() { return this.post ? this.post.date.getDate() : '' },
+		cover_photo_url() { return this.post ? this.post.images[0].url : ''},
 		humanReadableLocation() {
 			if (!this.location) return ''
 
@@ -56,9 +55,11 @@ export default {
 		}
 	},
 	async created() {
-		this.post = await PostService.getPost(this.$route.params.id)
+		this.post = await this.$store.dispatch('posts/getPost', { id: this.$route.params.id })
 
-		this.location = await LocationService.getLocationFromCoords(this.post.coords)
+		this.location = await this.$store.dispatch('location/getLocation', {
+			coords: this.post.coords
+		})
 	}
 }
 </script>

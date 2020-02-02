@@ -6,7 +6,6 @@
 
 <script>
 import TripMap from '@/components/TripMap'
-import PostManager from '@/service/post_service'
 
 export default {
 	name: 'Feed',
@@ -15,7 +14,7 @@ export default {
 		posts: []
 	}),
 	async created() {
-		this.posts = await PostManager.getPosts()
+		this.posts = await this.$store.dispatch('posts/getPosts')
 	},
 	methods: {
 		postClick(id) {
