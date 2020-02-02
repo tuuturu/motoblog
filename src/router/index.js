@@ -1,22 +1,38 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Feed from '@/views/Feed'
+import Post from '@/views/Post'
+import CurrentLocationMap from '@/views/CurrentLocationMap'
+import BlogContent from '@/views/BlogContent'
+import Images from '@/views/Images'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    name: 'home',
-    component: Home
+    name: 'feed',
+    component: Feed
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/posts/:id',
+    name: 'post',
+    component: Post
+  },
+  {
+    path: '/posts/:id/map',
+    name: 'postmap',
+    component: CurrentLocationMap
+  },
+  {
+    path: '/posts/:id/blog',
+    name: 'blogcontent',
+    component: BlogContent
+  },
+  {
+    path: '/posts/:id/images',
+    name: 'postimages',
+    component: Images
   }
 ]
 
