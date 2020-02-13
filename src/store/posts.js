@@ -1,3 +1,5 @@
+import { models } from '~tuuturu/motoblog-common'
+
 import PostManager from '@/service/post_service'
 
 const local_state = {
@@ -25,7 +27,7 @@ const local_actions = {
 
 		const posts = await PostManager.getPosts()
 
-		commit('posts', posts)
+		commit('posts', posts.map(post => new models.Post(post)))
 	},
 	async getPosts({ dispatch, getters }) {
 		await dispatch('refreshPosts')
