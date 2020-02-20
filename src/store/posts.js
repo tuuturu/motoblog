@@ -1,4 +1,4 @@
-import { models } from '~tuuturu/motoblog-common'
+import { models } from '@tuuturu/motoblog-common'
 
 import PostManager from '@/service/post_service'
 

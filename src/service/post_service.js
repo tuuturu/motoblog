@@ -1,4 +1,4 @@
-import Post from '@/models/Post'
+import { models } from '@tuuturu/motoblog-common'
 
 const mockPosts = [
 	{
@@ -144,9 +144,9 @@ export default {
 
 		const post = mockPosts.filter(p => p.id === id)[0]
 
-		return new Post(post)
+		return new models.Post(post)
 	},
 	async getPosts() {
-		return mockPosts.map(p => { return new Post(p) })
+		return mockPosts.map(p => { return new models.Post(p) })
 	}
 }
