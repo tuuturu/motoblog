@@ -1,6 +1,9 @@
+import Axios from 'axios'
 import { models } from '@tuuturu/motoblog-common'
 
-import PostManager from '@/service/post_service'
+const axios = Axios.create({
+	baseURL: process.env.VUE_APP_POST_SERVICE_URL
+})
 
 const local_state = {
 	posts: []
@@ -25,9 +28,9 @@ const local_actions = {
 	async refreshPosts({ commit, getters }) {
 		if (getters['hasPosts']) return
 
-		const posts = await PostManager.getPosts()
+		const { data } = await axios.get('/posts')
 
-		commit('posts', posts.map(post => new models.Post(post)))
+		commit('posts', data.map(post => new models.Post(post)))
 	},
 	async getPosts({ dispatch, getters }) {
 		await dispatch('refreshPosts')
@@ -37,7 +40,7 @@ const local_actions = {
 	async getPost({ dispatch, getters }, { id }) {
 		await dispatch('refreshPosts')
 
-		const results = getters['posts'].filter(p => p.id === parseInt(id))
+		const results = getters['posts'].filter(p => p.id === id)
 
 		if (results.length === 1) return results[0]
 

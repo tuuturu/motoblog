@@ -4,7 +4,6 @@
 
 <script>
 import L from 'leaflet'
-import PostManager from '@/service/post_service'
 import MarkerIcon from 'leaflet/dist/images/marker-icon.png'
 import MarkerShadow from 'leaflet/dist/images/marker-shadow.png'
 
@@ -34,7 +33,9 @@ export default {
 		}
 	},
 	async created() {
-		this.post = await PostManager.getPost(this.$route.params.id)
+		const id = this.$route.params.id
+
+		this.post = await this.$store.dispatch('posts/getPost', { id })
 	},
 	mounted() {
 		this.map = L.map('mapContainer')

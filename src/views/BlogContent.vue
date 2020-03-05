@@ -26,8 +26,6 @@
 </template>
 
 <script>
-import PostManager from '@/service/post_service'
-
 const MONTH = [
 	'January', 'February', 'March', 'April', 'May', 'June',
 	'July', 'August', 'September', 'October', 'November', 'December'
@@ -45,7 +43,9 @@ export default {
 		content() { return this.post ? this.post.content : '' }
 	},
 	async created() {
-		this.post = await PostManager.getPost(this.$route.params.id)
+		const id = this.$route.params.id
+
+		this.post = await this.$store.dispatch('posts/getPost', { id })
 	}
 }
 </script>

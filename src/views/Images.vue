@@ -16,7 +16,6 @@
 </template>
 
 <script>
-import PostManager from '@/service/post_service'
 
 export default {
 	name: 'Images',
@@ -24,7 +23,9 @@ export default {
 		images: []
 	}),
 	async created() {
-		const post = await PostManager.getPost(this.$route.params.id)
+		const id = this.$route.params.id
+
+		const post = await this.$store.dispatch('posts/getPost', { id })
 
 		this.images = post.images
 	}

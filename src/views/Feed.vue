@@ -5,16 +5,17 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import TripMap from '@/components/TripMap'
 
 export default {
 	name: 'Feed',
 	components: { TripMap },
-	data: () => ({
-		posts: []
-	}),
+	computed: {
+		...mapState('posts', ['posts'])
+	},
 	async created() {
-		this.posts = await this.$store.dispatch('posts/getPosts')
+		await this.$store.dispatch('posts/getPosts')
 	},
 	methods: {
 		postClick(id) {

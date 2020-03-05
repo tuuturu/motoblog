@@ -5,19 +5,13 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import L from 'leaflet'
 import MarkerIcon from 'leaflet/dist/images/marker-icon.png'
 import MarkerShadow from 'leaflet/dist/images/marker-shadow.png'
 
 const TILE_URL = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 const ATTRIBUTION = 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
-
-const START_ICON = L.icon({
-	iconUrl: MarkerIcon,
-	shadowUrl: MarkerShadow,
-	iconSize: [25, 41],
-	iconAnchor: [12.5, 41]
-})
 
 const CURRENT_LOCATION_ICON = L.icon({
 	iconUrl: MarkerIcon,
@@ -26,12 +20,18 @@ const CURRENT_LOCATION_ICON = L.icon({
 	iconAnchor: [12.5, 41]
 })
 
+function sortByDate(post_a, post_b) {
+	return post_a.date > post_b.date
+}
+
 export default {
 	name: 'TripMap',
-	props: { posts: Array },
 	data: () => ({
 		map: null
 	}),
+	computed: {
+		...mapState('posts', ['posts'])
+	},
 	watch: {
 		posts() {
 			this.addLines()
@@ -51,7 +51,7 @@ export default {
 			marker.addTo(map)
 		},
 		addLines() {
-			const coords = this.posts.map(p => p.coords)
+			const coords = [...this.posts].sort(sortByDate).map(p => p.coords)
 			const polyline = L.polyline(coords, {
 				color: 'black',
 				dashArray: '5,3,2'
@@ -60,13 +60,9 @@ export default {
 			this.map.fitBounds(polyline.getBounds())
 		},
 		addMarkers() {
-			this.addMarker(this.map, this.posts[0], START_ICON)
-
-			this.posts.slice(1, this.posts.length - 2).map(post => {
+			this.posts.map(post => {
 				this.addMarker(this.map, post, CURRENT_LOCATION_ICON)
 			})
-
-			this.addMarker(this.map, this.posts[this.posts.length - 1], CURRENT_LOCATION_ICON)
 		}
 	},
 	mounted() {
