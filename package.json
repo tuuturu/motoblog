@@ -17,7 +17,7 @@
     "axios": "^0.19.2"
   },
   "devDependencies": {
-    "@tuuturu/motoblog-common": "^0.0.16",
+    "@tuuturu/motoblog-common": "^0.0.17",
     "@tuuturu/vue": "latest",
     "@vue/cli-plugin-babel": "^4.2.2",
     "@vue/cli-plugin-eslint": "^4.2.2",
